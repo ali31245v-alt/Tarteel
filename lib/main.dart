@@ -176,7 +176,7 @@ class _MemorizationScreenState extends State<MemorizationScreen> {
         Container(width: 44, height: 44, decoration: BoxDecoration(color: task.done ? C.neon.withOpacity(.12) : C.panel2, borderRadius: BorderRadius.circular(14)), child: Icon(task.done ? Icons.check_circle_rounded : Icons.menu_book_rounded, color: task.done ? C.neon : C.muted)),
         const SizedBox(width: 13), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(task.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)), const SizedBox(height: 4), Text(task.subtitle, style: const TextStyle(color: C.muted, fontSize: 12))])),
         Icon(task.done ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded, color: task.done ? C.neon : C.muted),
-      ])))),
+      ]))))),
       const SizedBox(height: 8), const InfoTile(icon: Icons.repeat_rounded, title: 'Revision rhythm', body: 'Review yesterday’s passage before adding a new one. Return to older passages regularly.'),
     ]);
   }
@@ -220,7 +220,7 @@ class _MistakesLogScreenState extends State<MistakesLogScreen> {
         Text(e.category + ' • ' + e.date.day.toString() + '/' + e.date.month.toString() + '/' + e.date.year.toString(), style: const TextStyle(color: C.neon, fontSize: 10, fontWeight: FontWeight.bold)),
       ])),
       IconButton(onPressed: () => setState(() => entries.remove(e)), icon: const Icon(Icons.close_rounded, size: 18, color: C.muted), tooltip: 'Remove note'),
-    ])))),
+    ]))))),
     const SizedBox(height: 8), const Text('AI recitation detection is not yet connected. These are manual review notes, not automatically detected errors.', style: TextStyle(color: C.muted, fontSize: 11, height: 1.5)),
   ]);
 }
