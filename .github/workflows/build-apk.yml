@@ -1,0 +1,45 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Generate Android project files
+        run: |
+          flutter create --platforms=android --org com.tarteel.ai --project-name tarteel /tmp/tarteel_scaffold
+          cp -R /tmp/tarteel_scaffold/android ./android
+      - name: Resolve dependencies
+        run: flutter pub get
+      - name: Format source
+        run: dart format lib/main.dart
+      - name: Analyze source
+        run: flutter analyze
+      - name: Build release APK
+        run: flutter build apk --release
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tarteel-ai-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
