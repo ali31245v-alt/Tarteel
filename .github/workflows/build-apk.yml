@@ -33,15 +33,28 @@ jobs:
       - name: Enable Android core library desugaring
         run: |
           if [ -f android/app/build.gradle.kts ]; then
-            sed -i '/compileOptions {/a\        isCoreLibraryDesugaringEnabled = true' android/app/build.gradle.kts
-            sed -i '/dependencies {/a\    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")' android/app/build.gradle.kts
+            sed -i '/compileOptions[[:space:]]*{/a\        isCoreLibraryDesugaringEnabled = true' android/app/build.gradle.kts
+            if grep -q 'coreLibraryDesugaring(' android/app/build.gradle.kts; then
+              echo "Desugaring dependency already configured"
+            elif grep -q '^dependencies[[:space:]]*{' android/app/build.gradle.kts; then
+              sed -i '/^dependencies[[:space:]]*{/a\    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")' android/app/build.gradle.kts
+            else
+              printf '\n\ndependencies {\n    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")\n}\n' >> android/app/build.gradle.kts
+            fi
           elif [ -f android/app/build.gradle ]; then
-            sed -i '/compileOptions {/a\        coreLibraryDesugaringEnabled true' android/app/build.gradle
-            sed -i "/dependencies {/a\\    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'" android/app/build.gradle
+            sed -i '/compileOptions[[:space:]]*{/a\        coreLibraryDesugaringEnabled true' android/app/build.gradle
+            if grep -q 'coreLibraryDesugaring ' android/app/build.gradle; then
+              echo "Desugaring dependency already configured"
+            elif grep -q '^dependencies[[:space:]]*{' android/app/build.gradle; then
+              sed -i '/^dependencies[[:space:]]*{/a\    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.4"' android/app/build.gradle
+            else
+              printf '\n\ndependencies {\n    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.4"\n}\n' >> android/app/build.gradle
+            fi
           else
             echo "Android app Gradle file not found" >&2
             exit 1
           fi
+          grep -n 'coreLibraryDesugaring' android/app/build.gradle*
       - name: Resolve dependencies
         run: flutter pub get
       - name: Format source
