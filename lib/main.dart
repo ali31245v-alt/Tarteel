@@ -220,7 +220,7 @@ class _MistakesLogScreenState extends State<MistakesLogScreen> {
         Text(e.category + ' • ' + e.date.day.toString() + '/' + e.date.month.toString() + '/' + e.date.year.toString(), style: const TextStyle(color: C.neon, fontSize: 10, fontWeight: FontWeight.bold)),
       ])),
       IconButton(onPressed: () => setState(() => entries.remove(e)), icon: const Icon(Icons.close_rounded, size: 18, color: C.muted), tooltip: 'Remove note'),
-    ]))))),
+    ])))),
     const SizedBox(height: 8), const Text('AI recitation detection is not yet connected. These are manual review notes, not automatically detected errors.', style: TextStyle(color: C.muted, fontSize: 11, height: 1.5)),
   ]);
 }
