@@ -1,3 +1,4 @@
+# Rebuild trigger after correcting Dart syntax.
 name: Build APK
 
 on:
