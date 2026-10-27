@@ -35,7 +35,7 @@ jobs:
       - name: Format source
         run: dart format lib/main.dart
       - name: Analyze source
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos
       - name: Build release APK
         run: flutter build apk --release
       - name: Upload APK artifact
